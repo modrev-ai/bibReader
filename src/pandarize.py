@@ -1,5 +1,5 @@
 import pandas as pd
-import src.util as util
+import src._util as util
 
 class Pandarize:
     def __init__(self):
@@ -12,9 +12,9 @@ class Pandarize:
         TODO: source type inference
         '''
 
-        self.raw = util._url_loader(url=source)
+        self.raw = util.url_loader(url=source)
 
     def fit(self, kind='bib'):
         if kind == 'bib':
-            self.df = util._bib_parser(raw=self.raw)
+            self.df = util.bib_parser(raw=self.raw)
 
