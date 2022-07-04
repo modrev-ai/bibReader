@@ -39,7 +39,6 @@ def _bib_parser(raw):
             elif curr_name != None:
                 get_item = i+1
             else:
-                print('here?')
                 pass
         elif char == '}':
             if get_item:
@@ -61,7 +60,6 @@ def _bib_parser(raw):
                 is_newRow = False
             elif curr_name:
                 continue #edge case to handle comma (,) in the content
-            # else:
             get_name = i+1
         else:
             pass
