@@ -1,7 +1,7 @@
 import pandas as pd
-import src._util as util
+from pandarize import _util
 
-class Pandarize:
+class Pandarizer:
     def __init__(self):
         self.raw = None
         self.df = None
@@ -12,9 +12,11 @@ class Pandarize:
         TODO: source type inference
         '''
 
-        self.raw = util.url_loader(url=source)
+        self.raw = _util.url_loader(url=source)
 
     def fit(self, kind='bib'):
+        '''Method that infers data structure (in the future)
+        '''
         if kind == 'bib':
-            self.df = util.bib_parser(raw=self.raw)
+            self.df = _util.bib_parser(raw=self.raw)
 
