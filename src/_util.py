@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 
-def _url_loader(url):
+def url_loader(url):
     r = requests.get(url=url)
     r = r.content
 
@@ -14,15 +14,15 @@ def _url_loader(url):
 
     return raw
 
-def _manual_drop(raw, keys):
+def manual_drop(raw, keys):
     for key in keys:
         raw = raw.replace(key,'')
     
     return raw
 
-def _bib_parser(raw):
+def bib_parser(raw):
     df_out = pd.DataFrame()
-    raw = _manual_drop(raw, keys=['\n'])
+    raw = manual_drop(raw, keys=['\n'])
     is_newRow = True
 
     for i, char in enumerate(raw[:]):
