@@ -1,9 +1,20 @@
 import pandas as pd
-import requests
+import src.util as util
 
 class Pandarize:
     def __init__(self):
-        pass
+        self.raw = None
+        self.df = None
 
-    def load(source=None):
-        pass
+    def load(self, source=None):
+        '''Loads data from the source
+
+        TODO: source type inference
+        '''
+
+        self.raw = util._url_loader(url=source)
+
+    def fit(self, kind='bib'):
+        if kind == 'bib':
+            self.df = util._bib_parser(raw=self.raw)
+
