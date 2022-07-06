@@ -15,6 +15,17 @@ def url_loader(url):
 
     return raw
 
+def check_url(string):
+    '''Checks whether string is an url or not
+    '''
+    keywords = ['https://', 'http://', 'www.']
+
+    for keyword in keywords:
+        if keyword in string:
+            return True
+
+    return False
+
 def manual_drop(raw, keys):
     for key in keys:
         raw = raw.replace(key,'')

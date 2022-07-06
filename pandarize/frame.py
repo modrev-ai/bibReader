@@ -7,12 +7,12 @@ class Pandarizer:
         self.df = None
 
     def load(self, source=None):
-        '''Loads data from the source
-
-        TODO: source type inference
+        '''Loads data from either local file or the url
         '''
-
-        self.raw = _util.url_loader(url=source)
+        if _util.check_url(string=source):
+            self.raw = _util.url_loader(url=source)
+        else:
+            self.df = pd.read_excel(source)
 
     def fit(self, kind='bib'):
         '''Method that infers data structure (in the future)
