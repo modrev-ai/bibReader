@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+import os
 
 def url_loader(url):
     r = requests.get(url=url)
@@ -67,3 +68,39 @@ def bib_parser(raw):
     df_out.reset_index(drop=True, inplace=True)
 
     return df_out
+
+def bib_writer(df, types, alias, dirs):
+    '''bib writer and formatter that converts pandas 
+    dataframe into a bib file
+    '''
+
+    def parse(row, types=types, alias=alias):
+        items = []
+
+        for idx, item in zip(row.index, row):
+            if idx == types:
+                header = f'@{item}' + '{'
+            elif idx == alias:
+                alias = item + ',\n'
+            else:
+                item_i = f'\t{idx} = ' + '{' + f'{item}' + '},\n'
+                items.append(item_i)
+
+        out_text = header + alias
+        for i in items:
+            out_text += i
+        out_text += '}\n'
+
+        return out_text
+
+    N = df.shape[0]
+    out = ''
+
+    for i in range(N):
+        out += parse(df.iloc[i,:]) + '\n'
+
+    if not os.path.exists(path=dirs):
+        os.mkdir(path=dirs)
+
+    with open(f'{dirs}output.bib', 'w', encoding='utf-8') as f:
+        f.write(out)

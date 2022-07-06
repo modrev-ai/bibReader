@@ -20,3 +20,12 @@ class Pandarizer:
         if kind == 'bib':
             self.df = _util.bib_parser(raw=self.raw)
 
+    def transform(self, formats='bib', types=None, alias=None, dirs=None):
+        '''Transform loaded data into a specified data type
+        '''
+
+        if formats == 'bib':
+            _util.bib_writer(df=self.df, types=types, alias=alias, dirs=dirs)
+
+    def __version__():
+        print('V0.0.2')
