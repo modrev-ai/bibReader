@@ -26,3 +26,6 @@ class Pandarizer:
 
         if formats == 'bib':
             _util.bib_writer(df=self.df, types=types, alias=alias, dirs=dirs)
+
+    def __version__():
+        print('V0.0.2')
