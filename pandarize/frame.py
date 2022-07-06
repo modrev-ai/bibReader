@@ -12,7 +12,8 @@ class Pandarizer:
         if _util.check_url(string=source):
             self.raw = _util.url_loader(url=source)
         else:
-            self.df = pd.read_excel(source)
+            self.df = pd.read_excel(source, dtype=str)
+            self.df.fillna('', inplace=True)
 
     def fit(self, kind='bib'):
         '''Method that infers data structure (in the future)

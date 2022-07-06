@@ -42,7 +42,6 @@ def bib_parser(raw):
         if char == '@' and is_newRow:
             new_row = {}
             get_type = i+1
-            
         elif char == '{':
             if get_type:
                 new_row['type'] = raw[get_type:i].strip()
@@ -54,7 +53,7 @@ def bib_parser(raw):
                 pass
         elif char == '}':
             if get_item:
-                new_row[curr_name] = raw[get_item:i].strip()
+                new_row[curr_name] = raw[get_item:i]
                 get_item = None
                 curr_name = None
             else:
@@ -89,6 +88,7 @@ def bib_writer(df, types, alias, dirs):
         items = []
 
         for idx, item in zip(row.index, row):
+            item = str(item)
             if idx == types:
                 header = f'@{item}' + '{'
             elif idx == alias:
