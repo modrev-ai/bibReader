@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+from datetime import datetime
 import os
 
 def url_loader(url):
@@ -25,6 +26,19 @@ def check_url(string):
             return True
 
     return False
+
+def stamper(target):
+    '''Creates head stamp on the transformed dataframe
+    '''
+    msg = '-'*40 + '\n'
+    msg += f'This {target} file is created and stylized by pandarize\n'
+    msg += f'Date: {datetime.today().date()}\n'
+    msg += 'Author: Jong M. Shin\n'
+    msg += 'Email: jshinm@gmail.com\n'
+    msg += 'Webpage: https://pypi.org/project/pandarize/\n'
+    msg += '-'*40 + '\n\n'
+
+    return msg
 
 def manual_drop(raw, keys):
     for key in keys:
@@ -105,7 +119,9 @@ def bib_writer(df, types, alias, dirs):
         return out_text
 
     N = df.shape[0]
-    out = ''
+
+    # Add stamper before the first header
+    out = stamper(target='bib')
 
     for i in range(N):
         out += parse(df.iloc[i,:]) + '\n'
