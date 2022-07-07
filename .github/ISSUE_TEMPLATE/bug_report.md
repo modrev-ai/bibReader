@@ -1,0 +1,33 @@
+---
+name: Bug report
+about: Create a report to help us improve
+title: '[Bug]: '
+labels: '['bug']'
+assignees: ''
+body:
+    - type: markdown
+      attributes: 
+        value: |
+            Thank you for taking your valuable time to fill out this bug report! Please feel free to add screenshots as neede. Thank you for your interest to make pandarize better for everyone!
+    - type: input
+      id: contact
+      attributes:
+        label: Contact Details
+        description: How can we reach you if we can reach you?
+        placeholder: ex. email@example.com
+      validations:
+        required: false
+    - type: textarea
+      id: context
+      attributes:
+        label: What happened?
+        description: Please describe the nature of bug you are reporting
+      validations:
+        required: true
+    - type: textarea
+      id: verison
+      attributes:
+        label: Version
+        description: What version of pandarize did you use?
+      validations:
+        required: false
