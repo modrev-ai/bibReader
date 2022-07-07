@@ -27,16 +27,16 @@ def check_url(string):
 
     return False
 
-def stamper(target):
+def stamper(target, marker='%'):
     '''Creates head stamp on the transformed dataframe
     '''
-    msg = '-'*40 + '\n'
-    msg += f'This {target} file is created and stylized by pandarize\n'
-    msg += f'Date: {datetime.today().date()}\n'
-    msg += 'Author: Jong M. Shin\n'
-    msg += 'Email: jshinm@gmail.com\n'
-    msg += 'Webpage: https://pypi.org/project/pandarize/\n'
-    msg += '-'*40 + '\n\n'
+    msg = f'{marker}'*60 + '\n'
+    msg += f'{marker} This {target} file is created and stylized by pandarize\n'
+    msg += f'{marker} Date: {datetime.today().date()}\n'
+    msg += f'{marker} Author: Jong M. Shin\n'
+    msg += f'{marker} Email: jshinm@gmail.com\n'
+    msg += f'{marker} Webpage: https://pypi.org/project/pandarize/\n'
+    msg += f'{marker}'*60 + '\n\n'
 
     return msg
 
