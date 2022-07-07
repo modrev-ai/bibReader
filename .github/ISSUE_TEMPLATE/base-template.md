@@ -7,5 +7,5 @@ assignees: ''
 
 ---
 
-## Descriptions
+## Description of Issue
 <!-- Add your issue here -->
