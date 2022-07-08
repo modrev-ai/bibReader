@@ -2,7 +2,7 @@ from distutils.core import setup
 import pandarize
 
 VERSION = pandarize.__version__
-with open('README.md', 'r') as f:
+with open('README.rst', 'r') as f:
     README = f.read()
 
 setup(
@@ -15,6 +15,7 @@ setup(
     license='MIT',
     description='Turns data into panda dataframe',
     readme='README.md',
+    long_description_content_type='text/markdown',
     long_description=README,
     requires=['pandas', 'requests'],
     install_requires=["pandas", 'requests'],
