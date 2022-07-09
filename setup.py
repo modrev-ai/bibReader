@@ -2,7 +2,7 @@ from distutils.core import setup
 import pandarize
 
 VERSION = pandarize.__version__
-with open('README.rst', 'r') as f:
+with open('README.md', 'r') as f:
     README = f.read()
 
 setup(
