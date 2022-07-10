@@ -1,5 +1,10 @@
 name: Package upload to PyPI
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Uploading package to PyPI'
+        required: true
   release:
     types: [published]
 jobs:
