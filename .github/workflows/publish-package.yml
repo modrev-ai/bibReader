@@ -2,7 +2,7 @@ name: Package upload to PyPI
 on:
   workflow_dispatch:
     inputs:
-      version:
+      repo:
         description: 'Publish to PyPI (pypi, test)'
         required: true
         default: 'test'
