@@ -8,6 +8,12 @@ on:
         default: 'test'
   release:
     types: [published]
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
