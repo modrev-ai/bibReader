@@ -6,11 +6,11 @@ class Pandarizer:
         self.raw = None
         self.df = None
 
-    def load(self, source=None):
+    def load(self, source=None, savefile=None):
         '''Loads data from either local file or the url
         '''
         if _util.check_url(string=source):
-            self.raw = _util.url_loader(url=source)
+            self.raw = _util.url_loader(url=source, savefile=savefile)
         else:
             self.df = pd.read_excel(source, dtype=str)
             self.df.fillna('', inplace=True)

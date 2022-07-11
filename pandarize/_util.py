@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import datetime
 import os
 
-def url_loader(url):
+def url_loader(url, savefile):
     r = requests.get(url=url)
     r = r.content
 
@@ -13,6 +13,14 @@ def url_loader(url):
         pass
     else:
         raise Exception('The source cannot be parsed')
+
+    if savefile:
+        folder, files = os.path.split(savefile)
+        if not os.path.exists(path=folder):
+            os.mkdir(path=folder)
+
+        with open(savefile, 'w') as f:
+            f.write(raw)
 
     return raw
 
