@@ -3,14 +3,21 @@ import pandas as pd
 from datetime import datetime
 import os
 
-def url_loader(url, savefile):
-    r = requests.get(url=url)
-    r = r.content
+def source_loader(source, savefile):
+    if check_url(string=source):
+        r = requests.get(url=source)
+        r = r.content
+    else:
+        try:
+            with open(source, 'r', encoding='UTF-8', newline='') as f:
+                r = f.read()
+        except Exception as e:
+            print('Error while reading from local file')
 
     if isinstance(r, bytes):
         raw = r.decode('utf-8')
     elif isinstance(r, str):
-        pass
+        raw = r
     else:
         raise Exception('The source cannot be parsed')
 
@@ -19,7 +26,7 @@ def url_loader(url, savefile):
         if not os.path.exists(path=folder):
             os.mkdir(path=folder)
 
-        with open(savefile, 'w') as f:
+        with open(savefile, 'w', encoding='UTF-8', newline='') as f:
             f.write(raw)
 
     return raw
