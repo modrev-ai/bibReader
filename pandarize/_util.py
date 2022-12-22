@@ -1,6 +1,8 @@
 import requests
 import pandas as pd
 from datetime import datetime
+from pylatexenc.latex2text import LatexNodes2Text
+import re
 import os
 
 def source_loader(source, savefile):
@@ -30,6 +32,118 @@ def source_loader(source, savefile):
             f.write(raw)
 
     return raw
+
+def rfindall(string, pattern):
+    '''Find index of all occurrence of the pattern'''
+    
+    indexes = []
+    while not string.rfind(pattern) == -1:
+        idx = string.rfind(pattern)
+        indexes += [idx]
+        string = string[:idx]
+        
+    return indexes
+
+def bib_parser(raw):
+    '''Main bib parsing logic'''
+    all_lst = []
+    lst = []
+    start = None
+    standby = None
+
+    raw = raw.replace('\n', '').replace('\r', '') #remove linebreaks and linefeed
+    raw = re.sub(' +', ' ', raw) #contract whitespace
+
+    for i, c in enumerate(raw):
+        if c == '@':
+            if lst:
+                lst.append(raw[curr_idx:last_pair+1]) #edge case for last key:value pair
+                all_lst.append(_itemize_bib(lst))
+            lst = []
+            curr_idx = i
+            start = True
+        elif c == ',' and start:
+            lst.append(raw[curr_idx:i+1])
+            start = False
+            curr_idx = i+1
+        elif c == '}' and i != len(raw)-1:
+            last_pair = i
+            standby = True
+        elif c == ',' and standby:
+            # second check to account for misused bracket edge cases
+            # e.g., author = {A and B and C and {D} and F}
+            standby = False
+            
+            for check_i in raw[i+1:]:
+                if check_i == '}':
+                    break
+                elif check_i == '=':
+                    if raw[curr_idx:i+1]:
+                        lst.append(raw[curr_idx:i+1]) #remove linebreak
+                        curr_idx = i+1
+                    else:
+                        break
+        elif i == len(raw)-1:
+            lst.append(raw[curr_idx:i+1])
+            all_lst.append(_itemize_bib(lst))
+        elif c == ' ':
+            pass
+        else:
+            standby = False
+
+    return pd.DataFrame(all_lst)
+
+def _itemize_bib(lst):
+    '''Itemizes bib structured string into a json format'''
+    new_lst = []
+    dic = {}
+
+    for i, s in enumerate(lst):
+        if i == 0:
+            ii = s.rfind('@')
+            jj = s.rfind('{')
+            kk = s.rfind(',')
+            dic['type'] = s[ii:jj].replace('@', '')
+            dic['alias'] = s[jj:kk].replace('{', '')
+        else:
+            ii = sorted(rfindall(s, '='))[0]
+            if s[-1] == ',':
+                s = s[:-1]
+            out = LatexNodes2Text().latex_to_text(s[ii+1:]).strip()
+            dic[s[:ii].strip()] = out
+
+    for i in lst:
+        new_lst.append(LatexNodes2Text().latex_to_text(i))
+        
+    return dic
+
+def check_string(string):
+    '''Screens for misinterpreted strings that interferes parsing'''
+    
+    # for patterns {\'c} and {\%}
+    patterns = [r"\{[\]?[\\]?[']?[a-zA-Z|%]\}", r"[\\]?[~]?{}", r"{\.}", r"placeholder@"]
+    # print(re.findall(pattern, string))
+    for idx, pattern in enumerate(patterns):
+        for i in re.findall(pattern, string):
+            if idx == 0:
+                string = string.replace(i, i[-2])
+            elif idx == 1:
+                string = string.replace(i, '')
+                #placeholder for future conditions
+
+    # string = LatexNodes2Text().latex_to_text(string)
+
+    # remove double brackets
+    # for idx in r
+    # findall(string, '{{'):
+    #     for i, c in enumerate(string[idx:]):
+    #         if c == "}":
+    #             string = string[:idx+i] + string[idx+i+1:]
+    #             break
+
+    # string = string.replace('{{', '{')
+
+    return string
 
 def check_url(string):
     '''Checks whether string is an url or not
@@ -61,9 +175,10 @@ def manual_drop(raw, keys):
     
     return raw
 
-def bib_parser(raw):
+def bib_parser_old(raw):
     df_out = pd.DataFrame()
     raw = manual_drop(raw, keys=['\n'])
+    raw = check_string(raw)
     is_newRow = True
 
     for i, char in enumerate(raw[:]):
