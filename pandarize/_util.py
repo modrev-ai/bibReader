@@ -118,11 +118,10 @@ def _itemize_bib(lst):
     return dic
 
 def check_string(string):
-    '''Screens for misinterpreted strings that interferes parsing'''
+    '''Screens for misinterpreted strings that interferes parsing (deprecated)'''
     
     # for patterns {\'c} and {\%}
     patterns = [r"\{[\]?[\\]?[']?[a-zA-Z|%]\}", r"[\\]?[~]?{}", r"{\.}", r"placeholder@"]
-    # print(re.findall(pattern, string))
     for idx, pattern in enumerate(patterns):
         for i in re.findall(pattern, string):
             if idx == 0:
@@ -130,18 +129,6 @@ def check_string(string):
             elif idx == 1:
                 string = string.replace(i, '')
                 #placeholder for future conditions
-
-    # string = LatexNodes2Text().latex_to_text(string)
-
-    # remove double brackets
-    # for idx in r
-    # findall(string, '{{'):
-    #     for i, c in enumerate(string[idx:]):
-    #         if c == "}":
-    #             string = string[:idx+i] + string[idx+i+1:]
-    #             break
-
-    # string = string.replace('{{', '{')
 
     return string
 
@@ -176,6 +163,7 @@ def manual_drop(raw, keys):
     return raw
 
 def bib_parser_old(raw):
+    '''Old bib parsing logic (deprecated and replaced by the new logic)'''
     df_out = pd.DataFrame()
     raw = manual_drop(raw, keys=['\n'])
     raw = check_string(raw)
