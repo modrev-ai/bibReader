@@ -220,6 +220,8 @@ def bib_writer(df, types, alias, dirs):
         items = []
 
         for idx, item in zip(row.index, row):
+            if pd.isnull(item):
+                continue
             item = str(item)
             if idx == types:
                 header = f'@{item}' + '{'
