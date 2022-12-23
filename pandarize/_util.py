@@ -91,7 +91,10 @@ def bib_parser(raw):
         else:
             standby = False
 
-    return pd.DataFrame(all_lst)
+    df = pd.DataFrame(all_lst)
+    df = postprocessing(df)
+
+    return df
 
 def _itemize_bib(lst):
     '''Itemizes bib structured string into a json format'''
@@ -162,6 +165,14 @@ def manual_drop(raw, keys):
     
     return raw
 
+def postprocessing(df):
+    '''Post-process of constructed pandas DataFrame. Runs multiple checks.'''
+    
+    # Author Name Check for Biber
+    df['author'] = df['author'].apply(lambda x: convert_names(x))
+    
+    return df
+
 def bib_parser_old(raw):
     '''Old bib parsing logic (deprecated and replaced by the new logic)'''
     df_out = pd.DataFrame()
@@ -210,6 +221,36 @@ def bib_parser_old(raw):
     df_out.reset_index(drop=True, inplace=True)
 
     return df_out
+
+def check_names(string, connector):
+    '''Checks for valid author names'''
+    if connector in string:
+        return True
+    return False
+
+def convert_names(string, sep=',', connector='and'):
+    '''Convert First MI Last names to Last, First MI format.
+    '''
+    padded_connector = f' {connector} '
+    
+    if check_names(string, connector=padded_connector):
+        return string
+    
+    names = ''
+    lst = string.split(sep)
+    
+    for i, nms in enumerate(lst):
+        middle = ''
+        names = names + nms[-1] + ', ' + nms[0] + ' '
+        if len(nms) > 2:
+            for mname in nms[1:-1]:
+                middle += mname[0].upper() + '. '
+        if i+1 == len(lst):
+            names = names + middle
+        else:
+            names = names + middle + f' {connector}'
+            
+    return names
 
 def bib_writer(df, types, alias, dirs):
     '''bib writer and formatter that converts pandas 
