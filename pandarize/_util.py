@@ -261,7 +261,7 @@ def bib_writer(df, types, alias, dirs):
         items = []
 
         for i, (idx, item) in enumerate(zip(row.index, row)):
-            if pd.isnull(item):
+            if pd.isnull(item) or item == '':
                 continue
             item = str(item)
             if idx == types:
