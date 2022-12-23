@@ -57,7 +57,9 @@ def bib_parser(raw):
     for i, c in enumerate(raw):
         if c == '@':
             if lst:
-                lst.append(raw[curr_idx:last_pair+1]) #edge case for last key:value pair
+                # fixes cases when extra comma is added to the last key:value item
+                fix = raw[curr_idx:last_pair-2] + raw[last_pair-2:last_pair+1].replace(',', '')
+                lst.append(fix) #edge case for last key:value pair
                 all_lst.append(_itemize_bib(lst))
             lst = []
             curr_idx = i
@@ -67,7 +69,7 @@ def bib_parser(raw):
             start = False
             curr_idx = i+1
         elif c == '}' and i != len(raw)-1:
-            last_pair = i
+            last_pair = i #catches last pair and saves position as index
             standby = True
         elif c == ',' and standby:
             # second check to account for misused bracket edge cases
@@ -112,6 +114,7 @@ def _itemize_bib(lst):
             ii = sorted(rfindall(s, '='))[0]
             if s[-1] == ',':
                 s = s[:-1]
+            print(s)
             out = LatexNodes2Text().latex_to_text(s[ii+1:]).strip()
             dic[s[:ii].strip()] = out
 
@@ -258,7 +261,7 @@ def bib_writer(df, types, alias, dirs):
     def parse(row, types=types, alias=alias):
         items = []
 
-        for idx, item in zip(row.index, row):
+        for i, (idx, item) in enumerate(zip(row.index, row)):
             if pd.isnull(item):
                 continue
             item = str(item)
@@ -273,7 +276,8 @@ def bib_writer(df, types, alias, dirs):
         out_text = header + alias
         for i in items:
             out_text += i
-        out_text += '}\n'
+        out_text = out_text[:-2] #remove last comma
+        out_text += '\n}\n'
 
         return out_text
 
