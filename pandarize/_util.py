@@ -240,13 +240,13 @@ def convert_names(string, sep=',', connector='and'):
     lst = string.split(sep)
     
     for i, nms in enumerate(lst):
-        for nm in nms.split(' '):
-            names += f'{nm[-1]}, {nm[0]} '
-            if len(nm) > 2:
-                for mname in nm[1:-1]:
-                    names += f'{mname[0].upper()}. '
+        nm = nms.strip().split(' ')
+        names += f'{nm[-1]}, {nm[0]}'
+        if len(nm) > 2:
+            for mname in nm[1:-1]:
+                names += f' {mname[0].upper()}.'
         if i+1 != len(lst):
-            names += f'{connector} '
+            names += f'{padded_connector}'
             
     return names
 
