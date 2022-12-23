@@ -114,7 +114,6 @@ def _itemize_bib(lst):
             ii = sorted(rfindall(s, '='))[0]
             if s[-1] == ',':
                 s = s[:-1]
-            print(s)
             out = LatexNodes2Text().latex_to_text(s[ii+1:]).strip()
             dic[s[:ii].strip()] = out
 
