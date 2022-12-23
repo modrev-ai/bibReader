@@ -20,6 +20,5 @@ class Pandarizer:
     def transform(self, formats='bib', types=None, alias=None, dirs=None):
         '''Transform loaded data into a specified data type
         '''
-
         if formats == 'bib':
             bib_writer(df=self.df, types=types, alias=alias, dirs=dirs)

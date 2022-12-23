@@ -57,7 +57,9 @@ def bib_parser(raw):
     for i, c in enumerate(raw):
         if c == '@':
             if lst:
-                lst.append(raw[curr_idx:last_pair+1]) #edge case for last key:value pair
+                # fixes cases when extra comma is added to the last key:value item
+                fix = raw[curr_idx:last_pair-2] + raw[last_pair-2:last_pair+1].replace(',', '')
+                lst.append(fix) #edge case for last key:value pair
                 all_lst.append(_itemize_bib(lst))
             lst = []
             curr_idx = i
@@ -67,7 +69,7 @@ def bib_parser(raw):
             start = False
             curr_idx = i+1
         elif c == '}' and i != len(raw)-1:
-            last_pair = i
+            last_pair = i #catches last pair and saves position as index
             standby = True
         elif c == ',' and standby:
             # second check to account for misused bracket edge cases
@@ -91,7 +93,10 @@ def bib_parser(raw):
         else:
             standby = False
 
-    return pd.DataFrame(all_lst)
+    df = pd.DataFrame(all_lst)
+    df = postprocessing(df)
+
+    return df
 
 def _itemize_bib(lst):
     '''Itemizes bib structured string into a json format'''
@@ -162,6 +167,14 @@ def manual_drop(raw, keys):
     
     return raw
 
+def postprocessing(df):
+    '''Post-process of constructed pandas DataFrame. Runs multiple checks.'''
+    
+    # Author Name Check for Biber
+    df['author'] = df['author'].apply(lambda x: convert_names(x))
+    
+    return df
+
 def bib_parser_old(raw):
     '''Old bib parsing logic (deprecated and replaced by the new logic)'''
     df_out = pd.DataFrame()
@@ -211,6 +224,34 @@ def bib_parser_old(raw):
 
     return df_out
 
+def check_names(string, connector):
+    '''Checks for valid author names'''
+    if connector in string:
+        return True
+    return False
+
+def convert_names(string, sep=',', connector='and'):
+    '''Convert First MI Last names to Last, First MI format.
+    '''
+    padded_connector = f' {connector} '
+    
+    if check_names(string, connector=padded_connector):
+        return string
+    
+    names = ''
+    lst = string.split(sep)
+    
+    for i, nms in enumerate(lst):
+        nm = nms.strip().split(' ')
+        names += f'{nm[-1]}, {nm[0]}'
+        if len(nm) > 2:
+            for mname in nm[1:-1]:
+                names += f' {mname[0].upper()}.'
+        if i+1 != len(lst):
+            names += f'{padded_connector}'
+            
+    return names
+
 def bib_writer(df, types, alias, dirs):
     '''bib writer and formatter that converts pandas 
     dataframe into a bib file
@@ -219,8 +260,8 @@ def bib_writer(df, types, alias, dirs):
     def parse(row, types=types, alias=alias):
         items = []
 
-        for idx, item in zip(row.index, row):
-            if pd.isnull(item):
+        for i, (idx, item) in enumerate(zip(row.index, row)):
+            if pd.isnull(item) or item == '':
                 continue
             item = str(item)
             if idx == types:
@@ -234,7 +275,8 @@ def bib_writer(df, types, alias, dirs):
         out_text = header + alias
         for i in items:
             out_text += i
-        out_text += '}\n'
+        out_text = out_text[:-2] #remove last comma
+        out_text += '\n}\n'
 
         return out_text
 
