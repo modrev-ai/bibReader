@@ -27,9 +27,9 @@ class Pandarizer:
             bib_writer(df=self.df, types=types, alias=alias, dirs=dirs)
             
     def describe(self):
-        '''Reports basic metadata'''
+        '''Generates basic metadata'''
         
-        if not self.df:
+        if self.df is None:
             print('No file is loaded. Please load() and fit() to create metadata.')
             return 
             
@@ -37,7 +37,7 @@ class Pandarizer:
             print('The file has not been loaded successfully. Please check the file path and/or make sure that file is not corrupted.')
             return 
             
-        print(f'''The loaded file has {df.shape[0]} rows and {df.shape[1]} columns.\n
+        print(f'''The loaded file has {self.df.shape[0]} rows and {self.df.shape[1]} columns.\n
               ''')
         
         ## Config Setting
