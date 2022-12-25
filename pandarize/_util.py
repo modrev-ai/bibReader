@@ -44,6 +44,27 @@ def rfindall(string, pattern):
         
     return indexes
 
+def rfindall_matched(string, pattern, key):
+    '''Find all indices of the match pattern w.r.t to the key value
+    
+    E.g., the function returns [5] when attempts to find 
+    pattern ({abc}) in the string '123{abc}def' w.r.t. the key (b)
+    
+    Args:
+    -----
+    string : string; string to be searched
+    pattern : regex; regex pattern to be searched in string
+    key : string; a character from the string
+    
+    Returns:
+    out : list; returns a list of integers for each index
+    '''
+    match_index = []
+    for match in re.finditer(pattern, string):
+       match_index.append(match.start() + match.group().rfind(key))
+    
+    return match_index
+
 def bib_parser(raw):
     '''Main bib parsing logic'''
     all_lst = []
@@ -98,6 +119,7 @@ def bib_parser(raw):
 
     return df
 
+
 def _itemize_bib(lst):
     '''Itemizes bib structured string into a json format'''
     new_lst = []
@@ -111,12 +133,14 @@ def _itemize_bib(lst):
             dic['type'] = s[ii:jj].replace('@', '')
             dic['alias'] = s[jj:kk].replace('{', '')
         else:
-            ii = sorted(rfindall(s, '='))[0]
-            if s[-1] == ',':
-                s = s[:-1]
-            out = LatexNodes2Text().latex_to_text(s[ii+1:]).strip()
-            dic[s[:ii].strip()] = out
-
+            if s:
+                print(s, sorted(rfindall(s, '=')))
+                ii = sorted(rfindall(s, '='))[0]
+                if s[-1] == ',':
+                    s = s[:-1]
+                out = LatexNodes2Text().latex_to_text(s[ii+1:]).strip()
+                dic[s[:ii].strip()] = out
+            
     for i in lst:
         new_lst.append(LatexNodes2Text().latex_to_text(i))
         
