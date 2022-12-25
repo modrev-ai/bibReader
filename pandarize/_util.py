@@ -44,18 +44,46 @@ def rfindall(string, pattern):
         
     return indexes
 
-def bib_parser(raw):
+def rfindall_matched(string, pattern, key):
+    '''Find all indices of the match pattern w.r.t to the key value
+    
+    E.g., the function returns [5] when attempts to find 
+    pattern ({abc}) in the string '123{abc}def' w.r.t. the key (b)
+    
+    Args:
+    -----
+    string : string; string to be searched
+    pattern : regex; regex pattern to be searched in string
+    key : string; a character from the string
+    
+    Returns:
+    out : list; returns a list of integers for each index
+    '''
+    match_index = []
+    for match in re.finditer(pattern, string):
+       match_index.append(match.start() + match.group().rfind(key))
+    return match_index
+
+def bib_preprocessing(raw):
+    '''Pre-processes raw bib file'''
+    
+    raw = raw.replace('\n', '').replace('\r', '') #remove linebreaks and linefeed
+    raw = re.sub(' +', ' ', raw) #contract whitespace
+    
+    return raw
+
+def bib_parser(raw, idxkey):
     '''Main bib parsing logic'''
     all_lst = []
     lst = []
     start = None
     standby = None
 
-    raw = raw.replace('\n', '').replace('\r', '') #remove linebreaks and linefeed
-    raw = re.sub(' +', ' ', raw) #contract whitespace
-
     for i, c in enumerate(raw):
         if c == '@':
+            if not i in idxkey: #skip if not true start
+                continue
+            
             if lst:
                 # fixes cases when extra comma is added to the last key:value item
                 fix = raw[curr_idx:last_pair-2] + raw[last_pair-2:last_pair+1].replace(',', '')
@@ -111,12 +139,14 @@ def _itemize_bib(lst):
             dic['type'] = s[ii:jj].replace('@', '')
             dic['alias'] = s[jj:kk].replace('{', '')
         else:
-            ii = sorted(rfindall(s, '='))[0]
-            if s[-1] == ',':
-                s = s[:-1]
-            out = LatexNodes2Text().latex_to_text(s[ii+1:]).strip()
-            dic[s[:ii].strip()] = out
-
+            if s:
+                # print(s, sorted(rfindall(s, '=')))
+                ii = sorted(rfindall(s, '='))[0]
+                if s[-1] == ',':
+                    s = s[:-1]
+                out = LatexNodes2Text().latex_to_text(s[ii+1:]).strip()
+                dic[s[:ii].strip()] = out
+            
     for i in lst:
         new_lst.append(LatexNodes2Text().latex_to_text(i))
         
@@ -276,7 +306,7 @@ def bib_writer(df, types, alias, dirs):
         for i in items:
             out_text += i
         out_text = out_text[:-2] #remove last comma
-        out_text += '\n}\n'
+        out_text += '\n},\n'
 
         return out_text
 
@@ -286,7 +316,10 @@ def bib_writer(df, types, alias, dirs):
     out = stamper(target='bib')
 
     for i in range(N):
-        out += parse(df.iloc[i,:]) + '\n'
+        if i == N-1: #remove the very last comma
+            out += parse(df.iloc[i,:])[:-3] + parse(df.iloc[i,:])[-3:].replace(',', '') + '\n'
+        else:
+            out += parse(df.iloc[i,:]) + '\n'
 
     if not os.path.exists(path=dirs):
         os.mkdir(path=dirs)
