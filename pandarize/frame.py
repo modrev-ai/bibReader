@@ -30,12 +30,12 @@ class Pandarizer:
         '''Reports basic metadata'''
         
         if not self.df:
-            print('No file is loaded. Please load() and fit() to retrieve metadata.')
-            return 0
+            print('No file is loaded. Please load() and fit() to create metadata.')
+            return 
             
         if self.df.shape[0] == 0 or self.df.shape[1] == 0:
             print('The file has not been loaded successfully. Please check the file path and/or make sure that file is not corrupted.')
-            return 0
+            return 
             
         print(f'''The loaded file has {df.shape[0]} rows and {df.shape[1]} columns.\n
               ''')
