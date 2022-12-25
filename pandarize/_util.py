@@ -72,7 +72,7 @@ def bib_preprocessing(raw):
     
     return raw
 
-def bib_parser(raw, idxkey):
+def bib_parser(raw, idxkey, postprocess):
     '''Main bib parsing logic'''
     all_lst = []
     lst = []
@@ -122,7 +122,8 @@ def bib_parser(raw, idxkey):
             standby = False
 
     df = pd.DataFrame(all_lst)
-    df = postprocessing(df)
+    if postprocess:
+        df = postprocessing(df)
 
     return df
 
@@ -254,10 +255,16 @@ def bib_parser_old(raw):
 
     return df_out
 
-def check_names(string, connector):
+def check_names(string, sep, connector):
     '''Checks for valid author names'''
     if connector in string:
         return True
+    
+    # skip in case at least one name is already converted
+    # or there's misformatting issue
+    if sep in string:
+        return True
+    
     return False
 
 def convert_names(string, sep=',', connector='and'):
@@ -265,20 +272,23 @@ def convert_names(string, sep=',', connector='and'):
     '''
     padded_connector = f' {connector} '
     
-    if check_names(string, connector=padded_connector):
+    if check_names(string, sep=sep, connector=padded_connector):
         return string
     
     names = ''
     lst = string.split(sep)
     
     for i, nms in enumerate(lst):
-        nm = nms.strip().split(' ')
-        names += f'{nm[-1]}, {nm[0]}'
-        if len(nm) > 2:
-            for mname in nm[1:-1]:
-                names += f' {mname[0].upper()}.'
-        if i+1 != len(lst):
-            names += f'{padded_connector}'
+        try:
+            nm = nms.strip().split(' ')
+            names += f'{nm[-1]}, {nm[0]}'
+            if len(nm) > 2:
+                for mname in nm[1:-1]:
+                    names += f' {mname[0].upper()}.'
+            if i+1 != len(lst):
+                names += f'{padded_connector}'
+        except Exception as e:
+            print(f'{e} for {nms} at {i}th index')
             
     return names
 

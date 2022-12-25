@@ -14,11 +14,11 @@ class Pandarizer:
         self.raw = bib_preprocessing(raw=self.raw)
         self.idxkey = rfindall_matched(self.raw, r'[.*]?@[^}]*{*[,]', '@')
 
-    def fit(self, kind='bib'):
+    def fit(self, kind='bib', postprocess=False):
         '''Method that infers data structure (in the future)
         '''
         if kind == 'bib':
-            self.df = bib_parser(raw=self.raw, idxkey=self.idxkey)
+            self.df = bib_parser(raw=self.raw, idxkey=self.idxkey, postprocess=postprocess)
 
     def transform(self, formats='bib', types=None, alias=None, dirs=None):
         '''Transform loaded data into a specified data type
