@@ -4,6 +4,8 @@ from datetime import datetime
 from pylatexenc.latex2text import LatexNodes2Text
 import re
 import os
+import yaml as pyyaml
+import pkgutil
 
 def source_loader(source, savefile):
     if check_url(string=source):
@@ -32,6 +34,32 @@ def source_loader(source, savefile):
             f.write(raw)
 
     return raw
+
+def validate_config(obj):
+    '''Validates yaml config files'''
+    pass
+
+def load_config(yaml, path, ftype='bib'):
+    '''Loads yaml config file and returns a yaml object'''
+    def load(data):
+        try:
+            dic = {}
+            for i in pyyaml.safe_load(data)[ftype]:
+                for key, val in i.items():
+                    dic[key] = val
+            
+            print('Configuration applied. Please change the setting via <class object>.settings as needed.')
+            return dic
+            
+        except:
+            print('The config file is either not found or corrupted.')
+    
+    if yaml and path:
+        with open(path) as f:
+            return load(f)
+    else:
+        data = pkgutil.get_data(__name__, "/config/config.yaml").decode('utf-8')
+        return load(data)
 
 def rfindall(string, pattern):
     '''Find index of all occurrence of the pattern'''
