@@ -1,11 +1,21 @@
 import pandas as pd
 from pandarize._util import *
 
+
 class Pandarizer:
     def __init__(self):
         self.raw = None
         self.df = None
         self.idxkey = None
+        self.settings = None
+        
+        
+    def initialize(self, yaml=False, path=None):
+        '''Initializes the setting either for the first time by
+        loading a default yaml config file in system dir or 
+        load from an user-specified existing the file in `path`
+        '''
+        self.settings = load_config(yaml=yaml, path=path)
 
     def load(self, source=None, savefile=None):
         '''Loads raw data from either local file or the url
