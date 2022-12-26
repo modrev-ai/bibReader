@@ -2,3 +2,4 @@
   convert_names: True
   remove_latex: True
   remove_empty_entries: True
+  truncate_author_list: False
