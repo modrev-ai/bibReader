@@ -1,0 +1,4 @@
+- bib:
+  convert_names: True
+  remove_latex: True
+  remove_empty_entries: True
