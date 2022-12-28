@@ -2,4 +2,4 @@ bib:
   - convert_names: True
   - remove_latex: True
   - remove_empty_entries: True
-  - truncate_author_list: False #happens after `fit`
+  - truncate_author_list: False #applied after `fit`
