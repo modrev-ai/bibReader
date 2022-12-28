@@ -155,6 +155,10 @@ def bib_parser(raw, idxkey, postprocess):
 
     return df
 
+def truncate_names(srs):
+    '''Truncates names in Pandas series'''
+    pass
+
 def _itemize_bib(lst):
     '''Itemizes bib structured string into a json format'''
     new_lst = []
