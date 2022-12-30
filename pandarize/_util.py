@@ -300,8 +300,17 @@ def check_names(string, sep, connector):
     return False
 
 def convert_names(string, sep=',', connector='and'):
-    '''Convert First MI Last names to Last, First MI format.
-    '''
+    """Convert First MI Last names to Last, First MI format.
+
+    Args:
+        string (str): parsed string that contains names with (name)(sep)(name) format
+        sep (str, optional): original string separator between names. Defaults to ','.
+        connector (str, optional): new name connector that will connect converted names. Defaults to 'and'.
+
+    Returns:
+        str: converted names connected by `connector`
+    """
+    
     padded_connector = f' {connector} '
     
     if check_names(string, sep=sep, connector=padded_connector):
@@ -321,6 +330,9 @@ def convert_names(string, sep=',', connector='and'):
                 names += f'{padded_connector}'
         except Exception as e:
             print(f'{e} for {nms} at {i}th index')
+            
+    # conditional here for truncate author list
+    
             
     return names
 
