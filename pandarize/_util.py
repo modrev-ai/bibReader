@@ -238,55 +238,6 @@ def postprocessing(df):
     
     return df
 
-def bib_parser_old(raw):
-    '''Old bib parsing logic (deprecated and replaced by the new logic)'''
-    df_out = pd.DataFrame()
-    raw = manual_drop(raw, keys=['\n'])
-    raw = check_string(raw)
-    is_newRow = True
-
-    for i, char in enumerate(raw[:]):
-        
-        if char == '@' and is_newRow:
-            new_row = {}
-            get_type = i+1
-        elif char == '{':
-            if get_type:
-                new_row['type'] = raw[get_type:i].strip()
-                get_type = None
-                get_alias = i+1 #get the alias
-            elif curr_name != None:
-                get_item = i+1
-            else:
-                pass
-        elif char == '}':
-            if get_item:
-                new_row[curr_name] = raw[get_item:i]
-                get_item = None
-                curr_name = None
-            else:
-                df_row = pd.DataFrame.from_dict(new_row, orient='index').T
-                df_out = pd.concat([df_out, df_row])
-                is_newRow = True
-        elif char == '=' and get_name:
-            curr_name = raw[get_name:i].strip()
-            new_row[curr_name] = None
-            get_name = None
-        elif char == ',':
-            if get_alias:
-                new_row['alias'] = raw[get_alias:i]
-                get_alias = None
-                is_newRow = False
-            elif curr_name:
-                continue #edge case to handle comma (,) in the content
-            get_name = i+1
-        else:
-            pass
-    
-    df_out.reset_index(drop=True, inplace=True)
-
-    return df_out
-
 def check_names(string, sep, connector):
     '''Checks for valid author names'''
     if connector in string:
