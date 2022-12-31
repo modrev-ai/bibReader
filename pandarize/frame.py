@@ -24,11 +24,11 @@ class Pandarizer(Loader, Parser):
         if kind == 'bib':
             self.bib_parser(postprocess=postprocess)
 
-    def transform(self, formats='bib', types=None, alias=None, dirs=None):
+    def transform(self, formats='bib', filename='output'):
         '''Transform loaded data into a specified data type
         '''
         if formats == 'bib':
-            self.bib_writer(types=types, alias=alias, dirs=dirs)
+            self.bib_writer(filename=filename)
             
     def describe(self):
         '''Generates basic metadata'''

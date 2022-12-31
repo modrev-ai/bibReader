@@ -17,8 +17,8 @@ class Parser:
         self.raw = raw
 
     def postprocessing(self, df):
-        '''Post-process of constructed pandas DataFrame. Runs multiple checks.'''
-        
+        '''Post-processing of constructed pandas DataFrame. Runs multiple checks.'''
+
         # Author Name Check for Biber
         if self.settings['convert_names']:
             df['author'] = df['author'].apply(lambda x: convert_names(x))
@@ -82,13 +82,31 @@ class Parser:
             df = postprocessing(df)
 
         self.df = df
+        
+    @staticmethod
+    def _bib_screen(item):
+        """Screens main body of bib for any edge case discrepancies
+
+        Args:
+            item (str): string item to be analyzed
+        """
+        if not item:
+            return item
+
+        # Last comma is deemed to be erroneous
+        item = item[:-1] + item[-1].replace(',','')
+        
+        return item
     
-    def bib_writer(self, types, alias, dirs):
+    def bib_writer(self, filename):
         '''bib writer and formatter that converts pandas 
         dataframe into a bib file
         '''
 
         df = self.df
+        dirs = 'output/'
+        types = 'type' #column name for each bib entry type
+        alias = 'alias' #column name for each bib id
 
         def parse(row, types=types, alias=alias):
             items = []
@@ -102,7 +120,7 @@ class Parser:
                 elif idx == alias:
                     alias = item + ',\n'
                 else:
-                    item_i = f'\t{idx} = ' + '{' + f'{item}' + '},\n'
+                    item_i = f'\t{idx} = ' + '{' + f'{self._bib_screen(item)}' + '},\n'
                     items.append(item_i)
 
             out_text = header + alias
@@ -127,7 +145,7 @@ class Parser:
         if not os.path.exists(path=dirs):
             os.mkdir(path=dirs)
 
-        with open(f'{dirs}output.bib', 'w', encoding='utf-8') as f:
+        with open(f'{dirs}{filename}.bib', 'w', encoding='utf-8') as f:
             f.write(out)
 
     @staticmethod
