@@ -1,5 +1,6 @@
 bib:
-  - convert_names: True
-  - remove_latex: True
-  - remove_empty_entries: True
+  - convert_names: True #change name format to Last, First MI
+  - remove_latex: True #remove latex syntax
+  - remove_html: False #TODO: remove html tags
+  - remove_empty_entries: True #empty entries are removed after `transform`
   - truncate_author_list: False #applied after `fit`
