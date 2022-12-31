@@ -69,7 +69,8 @@ class Parser:
                         else:
                             break
             elif i == len(raw)-1:
-                lst.append(raw[curr_idx:i+1])
+                fix = raw[curr_idx:-3] + raw[-3:].replace(',', '')
+                lst.append(fix)
                 all_lst.append(self._itemize_bib(lst))
             elif c == ' ':
                 pass
@@ -93,7 +94,7 @@ class Parser:
             items = []
 
             for i, (idx, item) in enumerate(zip(row.index, row)):
-                if pd.isnull(item) or item == '':
+                if pd.isnull(item) or item == '' and self.settings['remove_empty_entries']:
                     continue
                 item = str(item)
                 if idx == types:
