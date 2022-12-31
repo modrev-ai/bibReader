@@ -96,12 +96,15 @@ class Parser:
         
         return item
     
-    def bib_writer(self, types, alias, dirs):
+    def bib_writer(self, filename):
         '''bib writer and formatter that converts pandas 
         dataframe into a bib file
         '''
 
         df = self.df
+        dirs = 'output/'
+        types = 'type' #column name for each bib entry type
+        alias = 'alias' #column name for each bib id
 
         def parse(row, types=types, alias=alias):
             items = []
@@ -140,7 +143,7 @@ class Parser:
         if not os.path.exists(path=dirs):
             os.mkdir(path=dirs)
 
-        with open(f'{dirs}output.bib', 'w', encoding='utf-8') as f:
+        with open(f'{dirs}{filename}.bib', 'w', encoding='utf-8') as f:
             f.write(out)
 
     @staticmethod
