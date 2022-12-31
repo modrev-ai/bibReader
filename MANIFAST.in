@@ -1,0 +1,2 @@
+include pandarize/config/config.yaml
+recursive-include examples/*.ipynb
