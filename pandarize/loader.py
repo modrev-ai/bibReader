@@ -58,7 +58,7 @@ class Loader:
         
         if yaml and path:
             with open(path) as f:
-                return load(f)
+                self.settings = load(f)
         else:
             data = pkgutil.get_data(__name__, "/config/config.yaml").decode('utf-8')
             self.settings = load(data)
