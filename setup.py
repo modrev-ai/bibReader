@@ -13,6 +13,7 @@ setup(
     author_email='jshinm@gmail.com',
     packages=find_packages(),
     package_data = {"": ['pandarize/config/config.yaml']},
+    include_package_data=True,
     url='https://github.com/jshinm/pandarize/',
     license='MIT',
     description='Turns data into panda dataframe',
