@@ -83,8 +83,7 @@ class Parser:
 
         self.df = df
         
-    @staticmethod
-    def _bib_screen(item):
+    def _bib_screen(self, item):
         """Screens main body of bib for any edge case discrepancies
 
         Args:
@@ -94,7 +93,11 @@ class Parser:
             return item
 
         # Last comma is deemed to be erroneous
-        item = item[:-1] + item[-1].replace(',','')
+        if self.settings['remove_last_comma']:
+            item = item[:-1] + item[-1].replace(',','')
+        
+        if self.settings['nullify_empty_string'] and item == ' ':
+            return None
         
         return item
     
