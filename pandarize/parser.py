@@ -1,4 +1,6 @@
 import re
+import os
+import pandas as pd
 from ._util import *
 from pylatexenc.latex2text import LatexNodes2Text
 
@@ -23,12 +25,14 @@ class Parser:
         
         return df
 
-    def bib_parser(self, raw, idxkey, postprocess):
+    def bib_parser(self, postprocess):
         '''Main bib parsing logic'''
         all_lst = []
         lst = []
         start = None
         standby = None
+        raw = self.raw
+        idxkey = rfindall_matched(raw, r'[.*]?@[^}]*{*[,]', '@')
 
         for i, c in enumerate(raw):
             if c == '@':

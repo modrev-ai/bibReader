@@ -19,13 +19,13 @@ class Pandarizer(Loader, Parser):
         '''
         self.source_loader(source=source, savefile=savefile)
         self.bib_preprocessing()
-        self.idxkey = rfindall_matched(self.raw, r'[.*]?@[^}]*{*[,]', '@')
+        # self.idxkey = rfindall_matched(self.raw, r'[.*]?@[^}]*{*[,]', '@')
 
     def fit(self, kind='bib', postprocess=False):
         '''Method that infers data structure (in the future)
         '''
         if kind == 'bib':
-            self.bib_parser(raw=self.raw, idxkey=self.idxkey, postprocess=postprocess)
+            self.bib_parser(postprocess=postprocess)
 
     def transform(self, formats='bib', types=None, alias=None, dirs=None):
         '''Transform loaded data into a specified data type
