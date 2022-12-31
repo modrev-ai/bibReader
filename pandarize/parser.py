@@ -82,6 +82,19 @@ class Parser:
             df = postprocessing(df)
 
         self.df = df
+        
+    @staticmethod
+    def _bib_screen(item):
+        """Screens main body of bib for any edge case discrepancies
+
+        Args:
+            item (str): string item to be analyzed
+        """
+          
+        # Last comma is deemed to be erroneous
+        item = item[:-1] + item[-1].replace(',','')
+        
+        return item
     
     def bib_writer(self, types, alias, dirs):
         '''bib writer and formatter that converts pandas 
@@ -102,7 +115,7 @@ class Parser:
                 elif idx == alias:
                     alias = item + ',\n'
                 else:
-                    item_i = f'\t{idx} = ' + '{' + f'{item}' + '},\n'
+                    item_i = f'\t{idx} = ' + '{' + f'{self._bib_screen(item)}' + '},\n'
                     items.append(item_i)
 
             out_text = header + alias
