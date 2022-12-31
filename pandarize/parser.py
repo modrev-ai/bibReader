@@ -15,13 +15,13 @@ class Parser:
         raw = re.sub(' +', ' ', raw) #contract whitespace
         
         self.raw = raw
-        # return raw
 
     def postprocessing(self, df):
         '''Post-process of constructed pandas DataFrame. Runs multiple checks.'''
         
         # Author Name Check for Biber
-        df['author'] = df['author'].apply(lambda x: convert_names(x))
+        if self.settings['convert_names']:
+            df['author'] = df['author'].apply(lambda x: convert_names(x))
         
         return df
 
