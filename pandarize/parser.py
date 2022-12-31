@@ -17,8 +17,8 @@ class Parser:
         self.raw = raw
 
     def postprocessing(self, df):
-        '''Post-process of constructed pandas DataFrame. Runs multiple checks.'''
-        
+        '''Post-processing of constructed pandas DataFrame. Runs multiple checks.'''
+
         # Author Name Check for Biber
         if self.settings['convert_names']:
             df['author'] = df['author'].apply(lambda x: convert_names(x))
@@ -90,7 +90,9 @@ class Parser:
         Args:
             item (str): string item to be analyzed
         """
-          
+        if not item:
+            return item
+
         # Last comma is deemed to be erroneous
         item = item[:-1] + item[-1].replace(',','')
         
