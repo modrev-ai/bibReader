@@ -12,7 +12,7 @@ setup(
     author='Jong M. Shin',
     author_email='jshinm@gmail.com',
     packages=find_packages(),
-    package_data = {"": ['*.yaml']},
+    package_data = {"yaml": ['pandarize/config/config.yaml']},
     url='https://github.com/jshinm/pandarize/',
     license='MIT',
     description='Turns data into panda dataframe',
