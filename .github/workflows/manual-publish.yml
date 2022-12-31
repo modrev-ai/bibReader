@@ -1,0 +1,41 @@
+name: Package upload to PyPI
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: 'Publish to PyPI (pypi, test)'
+        required: true
+        default: 'test'
+  release:
+    types: [published]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build
+    - name: Build package
+      run: python -m build
+    - name: Check Credential
+      run: 
+        echo "Secrets Loaded as [${{ secrets.PYPI_API_KEY }}]"
+    - name: Publish package (Test)
+      uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_KEY_TEST }}
+        repository_url: https://test.pypi.org/legacy/
+      if: ${{ github.event.inputs.repo == 'test' }}
+    - name: Officially publish package to PyPI
+      uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_TOKEN }}
+      if: ${{ github.event.inputs.repo == 'pypi' }}
