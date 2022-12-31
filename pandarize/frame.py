@@ -31,7 +31,7 @@ class Pandarizer(Loader, Parser):
         '''Transform loaded data into a specified data type
         '''
         if formats == 'bib':
-            self.bib_writer(df=self.df, types=types, alias=alias, dirs=dirs)
+            self.bib_writer(types=types, alias=alias, dirs=dirs)
             
     def describe(self):
         '''Generates basic metadata'''

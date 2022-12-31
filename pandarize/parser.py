@@ -82,10 +82,12 @@ class Parser:
 
         self.df = df
     
-    def bib_writer(self, df, types, alias, dirs):
+    def bib_writer(self, types, alias, dirs):
         '''bib writer and formatter that converts pandas 
         dataframe into a bib file
         '''
+
+        df = self.df
 
         def parse(row, types=types, alias=alias):
             items = []
