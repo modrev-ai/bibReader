@@ -144,14 +144,10 @@ class Parser:
                 dic['alias'] = s[jj:kk].replace('{', '')
             else:
                 if s:
-                    # print(s, sorted(rfindall(s, '=')))
                     ii = sorted(rfindall(s, '='))[0]
                     if s[-1] == ',':
                         s = s[:-1]
                     out = LatexNodes2Text().latex_to_text(s[ii+1:]).strip()
                     dic[s[:ii].strip()] = out
-                
-        for i in lst:
-            new_lst.append(LatexNodes2Text().latex_to_text(i))
-            
+
         return dic
