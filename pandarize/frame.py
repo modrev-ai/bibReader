@@ -4,9 +4,7 @@ from .loader import Loader
 from .parser import Parser
 
 class Pandarizer(Loader, Parser):
-    def __init__(self):
-        self.idxkey = None
-        
+
     def initialize(self, yaml=False, path=None):
         '''Initializes the setting either for the first time by
         loading a default yaml config file in system dir or 
@@ -19,7 +17,6 @@ class Pandarizer(Loader, Parser):
         '''
         self.source_loader(source=source, savefile=savefile)
         self.bib_preprocessing()
-        # self.idxkey = rfindall_matched(self.raw, r'[.*]?@[^}]*{*[,]', '@')
 
     def fit(self, kind='bib', postprocess=False):
         '''Method that infers data structure (in the future)
@@ -46,5 +43,3 @@ class Pandarizer(Loader, Parser):
             
         print(f'''The loaded file has {self.df.shape[0]} rows and {self.df.shape[1]} columns.\n
               ''')
-        
-        ## Config Setting
