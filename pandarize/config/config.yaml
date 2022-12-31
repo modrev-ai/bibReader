@@ -3,4 +3,4 @@ bib:
   - remove_latex: True #remove latex syntax
   - remove_html: False #TODO: remove html tags
   - remove_empty_entries: True #empty entries are removed after `transform`
-  - truncate_author_list: False #applied after `fit`
+  - truncate_author_list: False #shorten names in the list by only stating the first person followed by optional `suffix`
