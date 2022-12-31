@@ -2,6 +2,9 @@
 dev
 tmp
 
+# output
+output
+
 # build
 __pycache__
 *.egg-info
