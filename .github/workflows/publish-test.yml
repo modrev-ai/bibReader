@@ -4,7 +4,7 @@ on:
     types:
       - edited
     branches:
-      - main
+      - github.head_ref
     paths:
       - 'pandarize/__init__.py'
 jobs:
