@@ -166,10 +166,13 @@ class Parser:
                 dic['alias'] = s[jj:kk].replace('{', '')
             else:
                 if s:
-                    ii = sorted(rfindall(s, '='))[0]
-                    if s[-1] == ',':
-                        s = s[:-1]
-                    out = LatexNodes2Text().latex_to_text(s[ii+1:]).strip()
-                    dic[s[:ii].strip()] = out
+                    try:
+                        ii = sorted(rfindall(s, '='))[0]
+                        if s[-1] == ',':
+                            s = s[:-1]
+                        out = LatexNodes2Text().latex_to_text(s[ii+1:]).strip()
+                        dic[s[:ii].strip()] = out
+                    except Exception as e:
+                        print(f'Error: the following line of the file is not in a parsible format.\n=> {s}\nDescription: {e}\n')
 
         return dic
