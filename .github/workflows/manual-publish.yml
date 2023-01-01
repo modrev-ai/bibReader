@@ -1,4 +1,4 @@
-name: Package upload to PyPI
+name: Manually publish package to PyPI
 on:
   workflow_dispatch:
     inputs:
