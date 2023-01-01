@@ -3,8 +3,6 @@ on:
   pull_request:
     types:
       - edited
-    branches:
-      - github.head_ref
     paths:
       - 'pandarize/__init__.py'
 jobs:
