@@ -1,10 +1,9 @@
-name: Package upload to PyPI
+name: Publish package to Test PyPI
 on:
-  release:
-    types: [published]
   pull_request:
-    branches:
-      - main
+    types: [opened, synchronize, closed]
+    paths:
+      - 'pandarize/__init__.py'
 jobs:
   deploy:
     runs-on: ubuntu-latest
