@@ -2,7 +2,7 @@ name: Publish package to Test PyPI
 on:
   pull_request:
     types:
-      - edited
+      - opened
     paths:
       - 'pandarize/__init__.py'
 jobs:
