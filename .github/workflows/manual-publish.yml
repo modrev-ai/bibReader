@@ -6,8 +6,6 @@ on:
         description: 'Publish to PyPI (pypi, test)'
         required: true
         default: 'test'
-  release:
-    types: [published]
 jobs:
   deploy:
     runs-on: ubuntu-latest
