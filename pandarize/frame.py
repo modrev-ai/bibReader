@@ -4,6 +4,9 @@ from .loader import Loader
 from .parser import Parser
 
 class Pandarizer(Loader, Parser):
+    
+    def __init__(self):
+        self.initialize()
 
     def initialize(self, yaml=False, path=None):
         '''Initializes the setting either for the first time by
