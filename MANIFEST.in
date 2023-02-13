@@ -1,2 +1,2 @@
-include pandarize/config/config.yaml
+include bibReader/config/config.yaml
 recursive-include examples/*.ipynb
