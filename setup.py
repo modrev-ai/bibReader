@@ -1,6 +1,5 @@
 from distutils.core import setup
 from setuptools import find_packages
-import yaml
 import pandarize
 
 VERSION = pandarize.__version__
