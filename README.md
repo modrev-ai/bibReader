@@ -1,21 +1,18 @@
-# Pandarize
-This project aims to turn all kinds of data structure/types into a nice tabulated pandas DataFrame
+[![PyPI](https://github.com/jshinm/pandarize/actions/workflows/publish-package.yml/badge.svg)](https://github.com/jshinm/pandarize/actions/workflows/publish-package.yml)
+# bibReader
+The bibReader reads non-standard bib format from files/url and convert them into pandas DataFrames to easily work with the data, and then tranforms them back into a standardized bib file.
 
 # Installation
 ```
-pip install pandarize
+pip install bibReader
 ```
 
 # Basic Usage Guide
 ```python
-from pandarize.frame import Pandarizer
+from bibReader.frame import bReader
 
-pdr = Pandarizer() #instantiate Pandarizer class
-pdr.load(source='https://somewebsite.com/filename.bib') #it can load from url or local source
-pdr.fit() #infers data types and parse it into pandas dataframe
-pdr.transform() #changes pandas dataframe into different mode of data types
+bib = bReader() #instantiate bReader class
+bib.load(source='https://somewebsite.com/filename.bib') #it can load from url or local source
+bib.fit() #infers data types and parse it into pandas dataframe
+bib.transform() #changes pandas dataframe into different mode of data types
 ```
-
-# Currently Supported Data Types
-- bib
-

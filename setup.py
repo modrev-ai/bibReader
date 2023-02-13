@@ -1,20 +1,20 @@
 from distutils.core import setup
 from setuptools import find_packages
-import pandarize
+import bibReader
 
-VERSION = pandarize.__version__
+VERSION = bibReader.__version__
 with open('README.md', 'r') as f:
     README = f.read()
 
 setup(
-    name='Pandarize',
+    name='bibReader',
     version=VERSION,
     author='Jong M. Shin',
     author_email='jshinm@gmail.com',
     packages=find_packages(),
-    package_data = {"": ['pandarize/config/config.yaml']},
+    package_data = {"": ['bibReader/config/config.yaml']},
     include_package_data=True,
-    url='https://github.com/jshinm/pandarize/',
+    url='https://github.com/jshinm/bibReader/',
     license='MIT',
     description='Turns data into panda dataframe',
     readme='README.md',

@@ -1,5 +1,6 @@
 from datetime import datetime
 import re
+import bibReader
 
 def rfindall(string, pattern):
     '''Find index of all occurrence of the pattern'''
@@ -62,13 +63,13 @@ def check_url(string):
 
     return False
 
-def stamper(target, name, url, marker='%'):
+def stamper(target, marker='%'):
     '''Creates head stamp on the transformed dataframe
     '''
     msg = f'{marker}'*60 + '\n'
-    msg += f'{marker} This {target} file is created and processed by {name}\n'
+    msg += f'{marker} This {target} file is created and processed by bibReader-{bibReader.__version__}\n'
     msg += f'{marker} Date: {datetime.today().date()}\n'
-    msg += f'{marker} Webpage: {url}\n'
+    msg += f'{marker} Webpage: https://github.com/jshinm/bibReader/\n'
     msg += f'{marker}'*60 + '\n\n'
 
     return msg
