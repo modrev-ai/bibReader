@@ -6,6 +6,3 @@ bib:
   - remove_stamp: False #remove stamp automatically generated at the top
   - nullify_empty_string: True #change empty string into null value
   - remove_last_comma: True #removes comma when present at the last string
-app:
-  - appname: Pandarize
-  - url: https://github.com/jshinm/pandarize/
