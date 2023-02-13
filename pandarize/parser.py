@@ -137,7 +137,8 @@ class Parser:
         N = df.shape[0]
 
         # Add stamper before the first header
-        out = stamper(target='bib')
+        if not self.settings['remove_stamp']:
+            out = stamper(target='bib')
 
         for i in range(N):
             if i == N-1: #remove the very last comma
