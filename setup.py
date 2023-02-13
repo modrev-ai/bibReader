@@ -2,10 +2,6 @@ from distutils.core import setup
 from setuptools import find_packages
 import yaml
 import pandarize
-from pandarize.loader import Loader
-
-l = Loader()
-l.settings[]
 
 VERSION = pandarize.__version__
 with open('README.md', 'r') as f:
