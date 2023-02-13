@@ -41,7 +41,7 @@ class Loader:
         '''Validates yaml config files'''
         pass
 
-    def load_config(self, yaml=None, path=None, ftype='bib'):
+    def load_config(self, path=None, ftype='bib'):
         '''Loads yaml config file and returns a yaml object'''
         def load(data):
             try:
@@ -56,7 +56,7 @@ class Loader:
             except:
                 print('The config file is either not found or corrupted.')
         
-        if yaml and path:
+        if path:
             with open(path) as f:
                 self.settings = load(f)
         else:
