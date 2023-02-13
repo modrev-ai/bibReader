@@ -3,7 +3,7 @@ from ._util import *
 from .loader import Loader
 from .parser import Parser
 
-class Pandarizer(Loader, Parser):
+class bReader(Loader, Parser):
     
     def __init__(self):
         self.initialize()

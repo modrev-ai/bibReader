@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [closed]
     paths:
-      - 'pandarize/__init__.py'
+      - 'bibReader/__init__.py'
 jobs:
   deploy:
     runs-on: ubuntu-latest
