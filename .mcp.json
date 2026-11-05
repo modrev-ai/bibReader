@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "brainet": {
+      "type": "http",
+      "url": "https://modrev.tail997691.ts.net/hub/mcp",
+      "headers": {
+        "Authorization": "Bearer ${BRAINET_HUB_TOKEN}"
+      }
+    }
+  }
+}
