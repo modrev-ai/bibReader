@@ -1,9 +1,8 @@
 name: Publish package to Test PyPI
+# Manual only (25 Nov 2026, Jong: GitHub is code storage first; Actions only for public-site deploys
+# and jobs that must run on GitHub).
 on:
-  pull_request:
-    types: [closed]
-    paths:
-      - 'bibReader/__init__.py'
+  workflow_dispatch:
 jobs:
   deploy:
     runs-on: ubuntu-latest
